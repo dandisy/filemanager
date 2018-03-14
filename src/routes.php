@@ -1,8 +1,5 @@
 <?php
-
-
 Route::group(['prefix' => config('filemanager.defaultRoute', 'assets') , 'middleware' => config('filemanager.middleware')], function() {
-
     Route::get('/', 'Webcore\FileManager\Controllers\FileManagerController@getIndex');
 	Route::get('/dialog', 'Webcore\FileManager\Controllers\FileManagerController@getDialog');
 
@@ -16,6 +13,3 @@ Route::group(['prefix' => config('filemanager.defaultRoute', 'assets') , 'middle
 	Route::post('/rename', 'Webcore\FileManager\Controllers\FileManagerController@rename')->where('file', '.*');
 	Route::post('/optimize', 'Webcore\FileManager\Controllers\FileManagerController@optimize')->where('file', '.*');
 });
-
-
-
