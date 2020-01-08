@@ -21,5 +21,12 @@
         "psr-4": {
             "Webcore\\FileManager\\": "src"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "\\Webcore\\FileManager\\FileManagerServiceProvider"
+            ]
+        }
     }
 }
