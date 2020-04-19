@@ -10,6 +10,8 @@ use Webcore\FileManager\Facades\FileFunctionsFacade;
 use DirectoryIterator;
 use File;
 
+use Illuminate\Support\Str; // added by damdisy
+
 class FileManagerController extends BaseController {
 
     /**
@@ -402,22 +404,22 @@ class FileManagerController extends BaseController {
         $filtered = $items->filter(function ($item) use ($filter) {
             switch($filter){
                 case 'image':
-                    if(str_contains($item->mime, 'image')){
+                    if(Str::contains($item->mime, 'image')){
                         return $item;
                     };
                     break;
                 case 'audio':
-                    if(str_contains($item->mime, 'audio')){
+                    if(Str::contains($item->mime, 'audio')){
                         return $item;
                     };
                     break;
                 case 'video':
-                    if(str_contains($item->mime, 'video')){
+                    if(Str::contains($item->mime, 'video')){
                         return $item;
                     };
                     break;
                 case 'documents':
-                    if(str_contains($item->mime, 'word') || str_contains($item->mime, 'excel') || str_contains($item->mime, 'pdf') || str_contains($item->mime, 'plain') || str_contains($item->mime, 'rtf') || str_contains($item->mime, 'text') ){
+                    if(Str::contains($item->mime, 'word') || Str::contains($item->mime, 'excel') || Str::contains($item->mime, 'pdf') || Str::contains($item->mime, 'plain') || Str::contains($item->mime, 'rtf') || Str::contains($item->mime, 'text') ){
                         return $item;
                     };
                     break;
@@ -465,63 +467,63 @@ class FileManagerController extends BaseController {
 
         $mime = File::mimeType($file->getPathname());
 
-        if(str_contains($mime, 'directory')){
+        if(Str::contains($mime, 'directory')){
             return 'dir';
         }
 
-        if(str_contains($mime, 'image')){
+        if(Str::contains($mime, 'image')){
             return 'image';
         }
 
-        if(str_contains($mime, 'pdf')){
+        if(Str::contains($mime, 'pdf')){
             return 'pdf';
         }
 
-        if(str_contains($mime, 'audio')){
+        if(Str::contains($mime, 'audio')){
             return 'audio';
         }
 
-        if(str_contains($mime, 'video')){
+        if(Str::contains($mime, 'video')){
             return 'video';
         }
 
-        if(str_contains($mime, 'zip')){
+        if(Str::contains($mime, 'zip')){
             return 'file';
         }
 
-        if(str_contains($mime, 'rar')){
+        if(Str::contains($mime, 'rar')){
             return 'file';
         }
 
-        if(str_contains($mime, 'octet-stream')){
+        if(Str::contains($mime, 'octet-stream')){
             return 'file';
         }
 
-        if(str_contains($mime, 'excel')){
+        if(Str::contains($mime, 'excel')){
             return 'text';
         }
 
-        if(str_contains($mime, 'word') ){
+        if(Str::contains($mime, 'word') ){
             return 'text';
         }
 
-        if(str_contains($mime, 'css')){
+        if(Str::contains($mime, 'css')){
             return 'text';
         }
 
-        if(str_contains($mime, 'javascript')){
+        if(Str::contains($mime, 'javascript')){
             return 'text';
         }
 
-        if(str_contains($mime, 'plain') ){
+        if(Str::contains($mime, 'plain') ){
             return 'text';
         }
 
-        if(str_contains($mime, 'rtf') ){
+        if(Str::contains($mime, 'rtf') ){
             return 'text';
         }
 
-        if(str_contains($mime, 'text') ){
+        if(Str::contains($mime, 'text') ){
             return 'text';
         }
         return false;
@@ -536,11 +538,11 @@ class FileManagerController extends BaseController {
 
         $mime = File::mimeType($file->getPathname());
 
-        if(str_contains($mime, 'directory')){
+        if(Str::contains($mime, 'directory')){
             return false;
         }
 
-        if(str_contains($mime, 'image')){
+        if(Str::contains($mime, 'image')){
             if($folder){
                 return $folder.DIRECTORY_SEPARATOR.$file->getBaseName();
             }
@@ -548,43 +550,43 @@ class FileManagerController extends BaseController {
         }
 
 
-        if(str_contains($mime, 'pdf')){
+        if(Str::contains($mime, 'pdf')){
             return 'filemanager_assets/img/pdf.png';
         }
 
-        if(str_contains($mime, 'audio')){
+        if(Str::contains($mime, 'audio')){
             return 'filemanager_assets/img/audio.png';
         }
 
-        if(str_contains($mime, 'video')){
+        if(Str::contains($mime, 'video')){
             return 'filemanager_assets/img/video.png';
         }
 
-        if(str_contains($mime, 'zip')){
+        if(Str::contains($mime, 'zip')){
             return 'filemanager_assets/img/zip.png';
         }
 
-        if(str_contains($mime, 'rar')){
+        if(Str::contains($mime, 'rar')){
             return 'filemanager_assets/img/rar.png';
         }
 
-        if(str_contains($mime, 'octet-stream')){
+        if(Str::contains($mime, 'octet-stream')){
             return 'filemanager_assets/img/compressed.png';
         }
 
-        if(str_contains($mime, 'excel')){
+        if(Str::contains($mime, 'excel')){
             return 'filemanager_assets/img/excel.png';
         }
 
-        if(str_contains($mime, 'word') || $file->getExtension() == 'doc' || $file->getExtension() == 'docx' ){
+        if(Str::contains($mime, 'word') || $file->getExtension() == 'doc' || $file->getExtension() == 'docx' ){
             return 'filemanager_assets/img/word.png';
         }
 
-        if(str_contains($mime, 'css') || $file->getExtension() == 'css' ){
+        if(Str::contains($mime, 'css') || $file->getExtension() == 'css' ){
             return 'filemanager_assets/img/css.png';
         }
 
-        if(str_contains($mime, 'javascript') || $file->getExtension() == 'js'  || $file->getExtension() == 'json' ){
+        if(Str::contains($mime, 'javascript') || $file->getExtension() == 'js'  || $file->getExtension() == 'json' ){
             return 'filemanager_assets/img/js.png';
         }
 
