@@ -284,10 +284,10 @@ $(document).ready(function(){
      */
     actionFileButtons = function(){
         if(current_file === undefined || current_file === null){
-            $(".delete ,.move ,.preview").removeClass('active');
+            $(".delete ,.move ,.preview ,.crop").removeClass('active');
         } else {
             if(current_file.type != 'file'){
-                $(".delete ,.move ,.preview").addClass('active');
+                $(".delete ,.move ,.preview ,.crop").addClass('active');
             } else {
                 $(".preview").removeClass('active');
                 $(".delete ,.move").addClass('active');
@@ -538,6 +538,17 @@ $(document).ready(function(){
 
         $elements.push(rename);
         $elements.push(download);
+        
+
+        var crop = {
+            name: "Crop",
+            icon: 'fa-crop',
+            callback: function(key, options) {
+                $('.crop').trigger('click');
+            }
+        };
+        $elements.push(crop);
+
 
         $elements.push(del);
 
@@ -601,6 +612,33 @@ $(document).ready(function(){
                 }
 
                 $('#previewInfo').modal('toggle');
+            }
+        }
+    };
+
+
+    /**
+     * Preview function to show a preview of the file
+     *
+     * @returns {boolean}
+     */
+    crop = function(){
+        if(current_file === undefined || current_file === null){
+            return false;
+        } else {
+            if(current_file.type != 'file'){
+                $("#crop-name").text(current_file.name);
+                $("#crop-size").text(current_file.size);
+                // $('#crop-preview').empty();
+                $('#img-container').empty();
+                if(current_file.type == 'image'){
+                    // $('#crop-preview').append('<img src="'+ current_file.preview +'" class="img-responsive" id="crop-image">');
+                    $('#crop-height').text(current_file.height+"px").parent().removeClass('hide');
+                    $('#crop-width').text(current_file.width+"px").parent().removeClass('hide');
+                    $('#img-container').append('<img src="'+ current_file.preview +'" class="img-responsive" id="image">');
+                }
+                
+                $('#cropImage').modal('toggle');
             }
         }
     };
@@ -728,6 +766,10 @@ $(document).ready(function(){
 
     $(document).on('click', '.preview', function(){
         preview();
+    });    
+
+    $(document).on('click', '.crop', function(){
+        crop();
     });
 
 

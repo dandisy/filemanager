@@ -35,7 +35,7 @@ class FileManagerServiceProvider extends ServiceProvider
          * Publish Public Assets
          */
         $this->publishes([
-            __DIR__.'/public' => public_path('filemanager_assets'),
+            __DIR__.'/public' => public_path('vendor'),
         ], 'public');
 
 

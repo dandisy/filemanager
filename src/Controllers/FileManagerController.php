@@ -66,6 +66,60 @@ class FileManagerController extends BaseController {
      * @throws \Throwable
      */
     public function ajaxGetFilesAndFolders(Request $request){
+        // format exceptFilesInFileManager = user\user1=file1.ext1,user\user1=file2.ext2,role\role1=file3.ext3,permission\permission1=file4.ext4
+        $exceptFilesInFileManagerSetting = \App\Models\Setting::where('key', 'exceptFilesInFileManager')->first();
+        if($exceptFilesInFileManagerSetting) {
+            if($exceptFilesInFileManagerSetting->value) {
+                $exFiles = explode(',', trim($exceptFilesInFileManagerSetting->value));
+                foreach($exFiles as $exFile) {
+                    $exFileAccess = explode('=', trim($exFile));
+                    if($request->user()->name === trim($exFileAccess[0])) {
+                        $this->exceptFiles = collect(array_merge(config('filemanager.exceptFiles'), trim($exFileAccess[1])));
+                    }
+                }
+            }
+        }
+        // format exceptFoldersInFileManager = user1=folder1,user1=folder2,role1=folder3,permission1=folder4
+        $exceptFoldersInFileManagerSetting = \App\Models\Setting::where('key', 'exceptFoldersInFileManager')->first();
+        if($exceptFoldersInFileManagerSetting) {
+            if($exceptFoldersInFileManagerSetting->value) {
+                $exFolders = explode(',', trim($exceptFoldersInFileManagerSetting->value));
+                foreach($exFolders as $exFolder) {
+                    $exFolderAccess = explode('=', trim($exFolder));
+                    if($request->user()->name === trim($exFolderAccess[0])) {
+                        $this->exceptFolders = collect(array_merge(config('filemanager.exceptFolders'), trim($exFolderAccess[1])));
+                    }
+                }
+            }
+        }
+        // format exceptExtensionsInFileManager = user1=ext1,user1=ext2,role1=ext3,permission1=ext4
+        $exceptExtensionsInFileManagerSetting = \App\Models\Setting::where('key', 'exceptExtensionsInFileManager')->first();
+        if($exceptExtensionsInFileManagerSetting) {
+            if($exceptExtensionsInFileManagerSetting->value) {
+                $exExtensions = explode(',', trim($exceptExtensionsInFileManagerSetting->value));
+                foreach($exExtensions as $exExtension) {
+                    $exExtensionAccess = explode('=', trim($exExtension));
+                    if($request->user()->name === trim($exExtensionAccess[0])) {
+                        $this->exceptExtensions = collect(array_merge(config('filemanager.exceptExtensions'), trim($exExtensionAccess[1])));
+                    }
+                }
+            }
+        }
+        // value onlyUserOwnedFolderInFileManager = yes or no
+        $onlyUserOwnedFolderInFileManagerSetting = \App\Models\Setting::where('key', 'onlyUserOwnedFolderInFileManager')->first();
+        if($onlyUserOwnedFolderInFileManagerSetting) {
+            if(trim($onlyUserOwnedFolderInFileManagerSetting->value) == 'yes') {
+                $usersName = \App\User::where('id', '!=', $request->user()->id)->pluck('name')->toArray();
+                $this->exceptFolders = collect(array_merge(config('filemanager.exceptFolders'), $usersName));
+            }
+        }
+        // value onlyTenantOwnedFolder = yes or no
+        $onlyTenantOwnedFolderInFileManagerSetting = \App\Models\Setting::where('key', 'onlyTenantOwnedFolderInFileManagerSetting')->first();
+        if($onlyTenantOwnedFolderInFileManagerSetting) {
+            if(trim($onlyTenantOwnedFolderInFileManagerSetting->value) == 'yes') {
+                //
+            }
+        }
 
         if ($request->ajax()) {
             $folder = $request->get('folder');

@@ -11,20 +11,67 @@
 
         <link rel="stylesheet" href="https://cdn.plyr.io/1.5.18/plyr.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
-        <link type="text/css" rel="stylesheet" href="{{ asset('/filemanager_assets/vendor/dmuploader/css/uploader.css') }}">
-        <link type="text/css" rel="stylesheet" href="{{ asset('/filemanager_assets/css/filemanager.css') }}">
+        <link type="text/css" rel="stylesheet" href="{{ asset('/vendor/filemanager/vendor/dmuploader/css/uploader.css') }}">
+        <link type="text/css" rel="stylesheet" href="{{ asset('/vendor/filemanager/css/filemanager.css') }}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pnotify/3.0.0/pnotify.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pnotify/3.0.0/pnotify.brighttheme.min.css">
 
-        <link type="text/css" rel="stylesheet" href="{{ asset('/filemanager_assets/vendor/contextMenu/dist/jquery.contextMenu.css') }}">
-        <link type="text/css" rel="stylesheet" href="{{ asset('/filemanager_assets/vendor/highlight/styles/agate.css') }}">
+        <link type="text/css" rel="stylesheet" href="{{ asset('/vendor/filemanager/vendor/contextMenu/dist/jquery.contextMenu.css') }}">
+        <link type="text/css" rel="stylesheet" href="{{ asset('/vendor/filemanager/vendor/highlight/styles/agate.css') }}">
         {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
+
+        <link rel="stylesheet" href="{{ asset('/vendor/jquery-cropper/css/cropper.css') }}">
+        <link rel="stylesheet" href="{{ asset('/vendor/jquery-cropper/css/main.css') }}">
 
         @if( view()->exists('vendor.webcore.filemanager.modals') )
             @include('vendor.webcore.filemanager.modals')
         @else
             @include('filemanager::modals')
         @endif
+        
+        <style>
+            .modal-dialog {
+                width: auto !important;
+            }
+	
+            @media (min-width: 1200px) {
+                #cropImage .modal-dialog {
+                    max-width: 1200px;
+                }
+            }
+        
+            @media (max-width: 1200px) {
+                #cropImage .modal-dialog {
+                    max-width: 90%;
+                }
+            }
+	    
+            @media screen and (max-width: 991px) {
+                .nav > li .upload,
+                .nav > li .create-folder {
+                    display: none;
+                }
+            }
+            
+            @media screen and (max-width: 767px) {
+                .filemanager-item {
+                    height: 105px;
+                    padding-top: 5px;
+                }
+                
+                .navbar-header {
+                    display: none;
+                }
+                
+                .nav > li {
+                    display: inline-block;
+                }
+                
+                .nav > li.find {
+                    margin-top: 5px;
+                }
+            }
+        </style>
     </head>
     <body>
         <div class="default-views default-dialog">
@@ -45,13 +92,14 @@
                                 <div class="upload_div hide">
                                     <input type="file" name="files[]" id="single-upload-file" multiple="multiple" title="Click to add Files">
                                 </div>
-                                <li><button class="btn btn-info btn-cons" id="single-upload"<i class="fa fa-upload"></i> Upload</button></li>
-                                <li><button class="btn btn-info btn-cons" data-toggle="modal" data-target="#modalCreateFolder"><i class="fa fa-folder"></i> Create Folder</button></li>
+                                <li><button class="btn btn-info btn-cons" id="single-upload"><i class="fa fa-upload"></i> <span class="upload">Upload</span></button></li>
+                                <li><button class="btn btn-info btn-cons" data-toggle="modal" data-target="#modalCreateFolder"><i class="fa fa-folder"></i> <span class="create-folder">Create Folder</span></button></li>
                                 <li class="home"><button class="btn btn-default"><i class="fa fa-home"></i></button></li>
                                 <li class="refresh"><button class="btn btn-default"><i class="fa fa-refresh"></i></button></li>
                                 <li class="move hide"><button class="btn btn-default"><i class="fa fa-arrows"></i> Move</button></li>
                                 <li class="delete hide"><button class="btn btn-default"><i class="fa fa-trash"></i> Delete</button></li>
                                 <li class="preview hide"><button class="btn btn-default"><i class="fa fa-eye"></i> Preview</button></li>
+                                <li class="crop hide"><button class="btn btn-default"><i class="fa fa-crop"></i> Crop</button></li>
                                 <li class="find">
                                     <div class="navbar-form navbar-left navbar-input-group">
                                         <div class="input-group form-search">
@@ -130,18 +178,18 @@
         {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
 
         <script src="https://cdn.plyr.io/1.5.18/plyr.js" type="text/javascript"></script>
-        <script src="{{ asset('/filemanager_assets/vendor/pdfobject.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('/vendor/filemanager/vendor/pdfobject.js') }}" type="text/javascript"></script>
         <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery.fileDownload/1.4.2/jquery.fileDownload.min.js'></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pnotify/3.0.0/pnotify.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pnotify/3.0.0/pnotify.buttons.min.js" type="text/javascript"></script>
-        <script src="{{ asset('/filemanager_assets/vendor/contextMenu/dist/jquery.contextMenu.js') }}" type="text/javascript"></script>
-        <script src="{{ asset('/filemanager_assets/vendor/contextMenu/dist/jquery.ui.position.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('/vendor/filemanager/vendor/contextMenu/dist/jquery.contextMenu.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('/vendor/filemanager/vendor/contextMenu/dist/jquery.ui.position.min.js') }}" type="text/javascript"></script>
 
-        <script src="{{ asset('/filemanager_assets/vendor/highlight/highlight.pack.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('/vendor/filemanager/vendor/highlight/highlight.pack.js') }}" type="text/javascript"></script>
 
-        <script src="{{ asset('/filemanager_assets/vendor/dmuploader/js/dmuploader.js') }}" type="text/javascript"></script>
-        <script src="{{ asset('/filemanager_assets/vendor/dmuploader/js/gallery.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('/vendor/filemanager/vendor/dmuploader/js/dmuploader.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('/vendor/filemanager/vendor/dmuploader/js/gallery.js') }}" type="text/javascript"></script>
 
 
         <script>
@@ -199,7 +247,30 @@
 
             });
         </script>
-        <script src="{{ asset('filemanager_assets/js/filemanager.min.js') }}" type="text/javascript"></script>
-        <script src="{{ asset('filemanager_assets/js/upload.js') }}" type="text/javascript"></script>
+        <!-- <script src="{{ asset('vendor/filemanager/js/filemanager.min.js') }}" type="text/javascript"></script> -->
+        <script src="{{ asset('vendor/filemanager/js/filemanager.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('vendor/filemanager/js/upload.js') }}" type="text/javascript"></script>
+    
+        <script src="{{ asset('/vendor/jquery-cropper/js/cropper.js') }}"></script>
+        <script src="{{ asset('/vendor/jquery-cropper/js/main.js') }}"></script>
+
+        <script>
+            $(document).on('click', '#saveCroppedImage', function(e) {
+                e.preventDefault();
+
+                var $thisModal = $(document).find('#getCroppedCanvasModal');
+
+                var $file = $('#download').attr('href');
+                
+                $.ajax({
+                    url: "{{url('uploadCropped')}}",
+                    type: "post",
+                    data: {img: $file}
+                }).then(function(res) {
+                    $(document).find('.refresh').trigger('click');
+                    $thisModal.modal('toggle');
+                });
+            });
+        </script>
     </body>
 </html>
