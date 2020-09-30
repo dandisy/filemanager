@@ -168,6 +168,8 @@ FileManager has also a dialog or modal version.
 
 ![screenshot-5](https://cloud.githubusercontent.com/assets/74367/15646185/a03df24c-265c-11e6-9b0e-349bebd5d241.png)
 
+![screenshot-6](https://raw.githubusercontent.com/dandisy/filemanager/master/screenshot/filemanager-cropper.png)
+
 
 
 ### ToDo
