@@ -9,6 +9,11 @@ based on https://github.com/Krato/Laravel-5-File-Manager
 ![screenshot-1](https://cloud.githubusercontent.com/assets/74367/15646143/77016990-265c-11e6-9ecc-d82ae2c74f71.png)
 
 
+### Note
+
+    add meta csrf_token in html head section
+
+
 ### Installation
 
 First require this package:

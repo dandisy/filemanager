@@ -2,6 +2,7 @@
 namespace Webcore\FileManager\Services;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Intervention\Image\ImageManagerStatic as Image;
 
 /**
  * Class Image
@@ -211,8 +212,16 @@ class FileFunctionsService
         if(!is_writable($path)){
             return ['error' => 'This folder is not writable'];
         }
+        
+        $img = Image::make($file);
+        if($img->width() > 1920 ) {
+            $img->widen(1920, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+        }
 
-        if($file->move($path, $name)){
+        // if($file->move($path, $name)){
+        if($img->save($path.$name, 80)){
 
             //Try to compress 
             if(config('filemanager.optimizeImages') == true){
@@ -223,7 +232,13 @@ class FileFunctionsService
                     if($ext == 'png'){
                         $compressed_png_content = $this->compress_png($path.$name);
                         if($compressed_png_content != false){
-                            file_put_contents($path.$name, $compressed_png_content);
+                            // file_put_contents($path.$name, $compressed_png_content);
+                            $img = Image::make($compressed_png_content);
+                            if($img->width() > 600 ) {
+                                $img->widen(600, function ($constraint) {
+                                    $constraint->aspectRatio();
+                                })->save($path.$name);
+                            }
                         }
                     }
                 }
@@ -234,7 +249,13 @@ class FileFunctionsService
                         $compressed_jpg_content = $this->compress_jpg($path.$name);
 
                         if($compressed_jpg_content != false){
-                            file_put_contents($path.$name, $compressed_jpg_content);
+                            // file_put_contents($path.$name, $compressed_jpg_content);
+                            $img = Image::make($compressed_jpg_content);
+                            if($img->width() > 600 ) {
+                                $img->widen(600, function ($constraint) {
+                                    $constraint->aspectRatio();
+                                })->save($path.$name);
+                            }
                         }
                     }
                 }
