@@ -12,7 +12,8 @@
   ],
   "require": {
     "php": "^7.1.3",
-    "dandisy/zipper": "1.0.x"
+    "dandisy/zipper": "1.0.x",
+    "intervention/image": "^2.5"
   },
   "require-dev": {
         "phpunit/phpunit" : "^8.0"

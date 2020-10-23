@@ -20,6 +20,7 @@ First require this package:
 
 ```sh
 composer require dandisy/filemanager
+composer require intervention/image
 ```
 
 Add the provider on ‘app.php’:
