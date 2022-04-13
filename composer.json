@@ -1,13 +1,13 @@
 {
   "name": "dandisy/filemanager",
   "description": "Webcore Filemanager",
-  "keywords": ["webcore", "file", "manager", "laravel 5", "infinety"],
+  "keywords": ["webcore", "file", "manager", "laravel", "infinety"],
   "homepage": "https://github.com/dandisy/filemanager",
   "license": "MIT",
   "authors": [
     {
       "name": "Dandi Setiyawan",
-      "email": "dandi@redbuzz.co.id"
+      "email": "dandi@sgdigitals.com"
     }
   ],
   "require": {
