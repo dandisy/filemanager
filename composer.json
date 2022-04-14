@@ -16,7 +16,7 @@
     "intervention/image": "^2.5"
   },
   "require-dev": {
-        "phpunit/phpunit" : "^8.0"
+        "phpunit/phpunit" : "^8.0|^9.0"
     },
   "autoload": {
         "psr-4": {
