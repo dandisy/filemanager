@@ -14,6 +14,11 @@ based on https://github.com/Krato/Laravel-5-File-Manager
     add meta csrf_token in html head section
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    Dependencies
+
+    Webcore settings system
+    Webcore uploadCropped route
+
 
 ### Installation
 
